@@ -9,7 +9,7 @@ def complex_matrix(xmin, xmax, ymin, ymax, pixel_density):
     return real[np.newaxis, :] + imaginary[:, np.newaxis] * 1j
 
 
-# Returns true/false if z value exceeds or stays within threshold of 2 (in or not in Mandelbrot set)
+# Returns the complex_matrix as true/false values if z is in the Mandelbrot set (threshold less than 2)
 def is_stable(c, num_iterations):
     z = 0
     for _ in range(num_iterations):
@@ -24,7 +24,7 @@ def get_members(c, num_iterations):
 # Create Visual scatterplot of equation
 def mandelbrot_scatterplot(c, num_iterations):
     members = get_members(c, num_iterations)
-    plot.scatter(members.real, members.imag, color="black", marker=",", s=1)
+    plot.scatter(members.real, members.imag, color="black", marker="1", s=1)
     plot.gca().set_aspect("equal")
     plot.axis("on")
     plot.tight_layout()
