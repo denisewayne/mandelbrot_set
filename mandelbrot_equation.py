@@ -31,5 +31,6 @@ def mandelbrot_scatterplot(c, num_iterations):
     plot.show()
 
 # Run
-matrix = complex_matrix(-2, 0.5, -1.5, 1.5, pixel_density=21)
-mandelbrot_scatterplot(matrix, 10)
+np.warnings.filterwarnings("ignore")
+matrix = complex_matrix(-2, 0.5, -1.5, 1.5, pixel_density=512)
+mandelbrot_scatterplot(matrix, 20)
