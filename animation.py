@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
+# JULIA SET fixes value for c and sets a different Initial Condition than Mandelbrot
 x_start, y_start = -2, -2  # an interesting region starts here
 width, height = 4, 4  # for 4 units up and right
 density_per_unit = 200  # how many pixles per unit
@@ -11,14 +12,14 @@ re = np.linspace(x_start, x_start + width, width * density_per_unit)
 im = np.linspace(y_start, y_start + height, height * density_per_unit)
 
 
-threshold = 20  # max allowed iterations
+threshold = 40  # max allowed iterations
 frames = 100  # number of frames in the animation
 
 # we represent c as c = r*cos(a) + i*r*sin(a) = r*e^{i*a}
 r = -1
 a = np.linspace(0, 2 * np.pi, frames)
 
-fig = plt.figure(figsize=(10, 10))  # instantiate a figure to draw
+fig = plt.figure(figsize=(10, 10))  # instantiate a figure to draw for the photo size
 ax = plt.axes()  # create an axes object
 
 
@@ -48,12 +49,18 @@ def julia_quadratic(zx, zy, cx, cy, threshold):
 
 def animate(i):
     ax.clear()  # clear axes object
-    ax.set_xticks([], [])  # clear x-axis ticks
-    ax.set_yticks([], [])  # clear y-axis ticks
+    # ax.set_xticks([], [])  # clear x-axis ticks
+    # ax.set_yticks([], [])  # clear y-axis ticks
 
+    # Julia set does not move when c is constant because the equation is not affected by iteration
     X = np.empty((len(re), len(im)))  # the initial array-like image
-    cx, cy = r * np.cos(a[i]), r * np.sin(a[i])  # the initial c number
 
+    # the i is references to the index between frame # over [0,2pi]
+    # ( what value of c to show as it revolves around a circle)
+    cx, cy = r * np.cos(a[i]), r * np.sin(a[i])  # the initial c number
+    # cx, cy = 0.3 + 0.6 * i, 0
+
+    # graph this specific index of c in a circle iterated over a fixed time
     # iterations for the given threshold
     for i in range(len(re)):
         for j in range(len(im)):
@@ -61,7 +68,7 @@ def animate(i):
                 re[i], im[j], cx, cy, threshold
             )  # shows the transformed graph per iteration
 
-    img = ax.imshow(X, interpolation="bilinear", cmap="BuGn")
+    img = ax.imshow(X.T, interpolation="gaussian", cmap="BuGn")
     return [img]
 
 
